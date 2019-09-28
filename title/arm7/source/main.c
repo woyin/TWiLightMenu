@@ -37,12 +37,12 @@ unsigned int * SCFG_MC=(unsigned int*)0x4004010;
 unsigned int * CPUID=(unsigned int*)0x4004D00;
 unsigned int * CPUID2=(unsigned int*)0x4004D04;
 
-volatile int soundVolume = 127;
+static int soundVolume = 127;
 
 //---------------------------------------------------------------------------------
 void soundFadeOut() {
 //---------------------------------------------------------------------------------
-	soundVolume -= 3;
+	soundVolume -= 15;
 	if (soundVolume < 0) {
 		soundVolume = 0;
 	}

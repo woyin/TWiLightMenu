@@ -21,6 +21,7 @@
 ------------------------------------------------------------------*/
 #include <nds.h>
 #include <nds/arm9/dldi.h>
+#include <maxmod9.h>
 #include <cstdio>
 #include <fat.h>
 #include <sys/stat.h>
@@ -158,6 +159,7 @@ void loadMainMenu()
 	fifoSendValue32(FIFO_USER_01, 1); // Fade out sound
 	for (int i = 0; i < 25; i++)
 		swiWaitForVBlank();
+	mmEffectCancelAll();
 	fifoSendValue32(FIFO_USER_01, 0); // Cancel sound fade out
 
 	vector<char *> argarray;
