@@ -631,8 +631,6 @@ int main(int argc, char **argv)
 		screenmode = 1;
 	}
 
-	srand(time(NULL));
-
 	while (1) {
 		if (screenmode == 1) {
 			fadeType = false;
