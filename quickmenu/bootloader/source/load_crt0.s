@@ -30,6 +30,7 @@
 	.global argSize
 	.global dsiSD
 	.global dsiMode
+	.global fromNitro
 	.global clearMasterBright
 	.global dsMode
 @---------------------------------------------------------------------------------
@@ -56,6 +57,8 @@ dldiOffset:
 dsiSD:
 	.word	0
 dsiMode:
+	.word	0
+fromNitro:
 	.word	0
 clearMasterBright:
 	.word	0

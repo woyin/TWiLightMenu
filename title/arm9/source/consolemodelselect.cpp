@@ -18,16 +18,16 @@ void LoadConsoleBMP(int consoleModel) {
 	switch (consoleModel) {
 		case 0:
 		default:
-			file = fopen("nitro:/graphics/dsi.bmp", "rb");
+			file = fopen("nitro:/title/graphics/dsi.bmp", "rb");
 			break;
 		case 1:
-			file = fopen("nitro:/graphics/devdsi.bmp", "rb");
+			file = fopen("nitro:/title/graphics/devdsi.bmp", "rb");
 			break;
 		case 2:
-			file = fopen("nitro:/graphics/o3ds.bmp", "rb");
+			file = fopen("nitro:/title/graphics/o3ds.bmp", "rb");
 			break;
 		case 3:
-			file = fopen("nitro:/graphics/n3ds.bmp", "rb");
+			file = fopen("nitro:/title/graphics/n3ds.bmp", "rb");
 			break;
 	}
 
@@ -58,16 +58,16 @@ void LoadConsoleBMP(int consoleModel) {
 		switch (consoleModel) {
 			case 0:
 			default:
-				file = fopen("nitro:/graphics/consoleseltext_dsi-fr.bmp", "rb");
+				file = fopen("nitro:/title/graphics/consoleseltext_dsi-fr.bmp", "rb");
 				break;
 			case 1:
-				file = fopen("nitro:/graphics/consoleseltext_devdsi-fr.bmp", "rb");
+				file = fopen("nitro:/title/graphics/consoleseltext_devdsi-fr.bmp", "rb");
 				break;
 			case 2:
-				file = fopen("nitro:/graphics/consoleseltext_o3ds-fr.bmp", "rb");
+				file = fopen("nitro:/title/graphics/consoleseltext_o3ds-fr.bmp", "rb");
 				break;
 			case 3:
-				file = fopen("nitro:/graphics/consoleseltext_n3ds-fr.bmp", "rb");
+				file = fopen("nitro:/title/graphics/consoleseltext_n3ds-fr.bmp", "rb");
 				break;
 		}
 	}
@@ -75,16 +75,16 @@ void LoadConsoleBMP(int consoleModel) {
 		switch (consoleModel) {
 			case 0:
 			default:
-				file = fopen("nitro:/graphics/consoleseltext_dsi.bmp", "rb");
+				file = fopen("nitro:/title/graphics/consoleseltext_dsi.bmp", "rb");
 				break;
 			case 1:
-				file = fopen("nitro:/graphics/consoleseltext_devdsi.bmp", "rb");
+				file = fopen("nitro:/title/graphics/consoleseltext_devdsi.bmp", "rb");
 				break;
 			case 2:
-				file = fopen("nitro:/graphics/consoleseltext_o3ds.bmp", "rb");
+				file = fopen("nitro:/title/graphics/consoleseltext_o3ds.bmp", "rb");
 				break;
 			case 3:
-				file = fopen("nitro:/graphics/consoleseltext_n3ds.bmp", "rb");
+				file = fopen("nitro:/title/graphics/consoleseltext_n3ds.bmp", "rb");
 				break;
 		}
 	}
@@ -128,10 +128,10 @@ bool consoleModel_isSure(void) {
 
 	//If not french, then fallback to english
 	if(language == 2){
-		file = fopen("nitro:/graphics/consoleseltext_areyousure-fr.bmp", "rb");
+		file = fopen("nitro:/title/graphics/consoleseltext_areyousure-fr.bmp", "rb");
 	}
 	else {
-		file = fopen("nitro:/graphics/consoleseltext_areyousure.bmp", "rb");
+		file = fopen("nitro:/title/graphics/consoleseltext_areyousure.bmp", "rb");
 	}
 
 	if (file) {

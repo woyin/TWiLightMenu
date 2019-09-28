@@ -25,6 +25,7 @@
 #include <limits.h>
 
 #include <unistd.h>
+#include <stdio.h>
 #include <fat.h>
 
 #include "load_bin.h"
@@ -69,8 +70,9 @@ dsiMode:
 #define ARG_SIZE_OFFSET 20
 #define HAVE_DSISD_OFFSET 28
 #define DSIMODE_OFFSET 32
-#define CLEAR_MASTER_BRIGHT_OFFSET 36
-#define DSMODE_SWITCH_OFFSET 40
+#define NITRO_OFFSET 36
+#define CLEAR_MASTER_BRIGHT_OFFSET 40
+#define DSMODE_SWITCH_OFFSET 44
 
 
 typedef signed int addr_t;
@@ -268,7 +270,7 @@ static bool dldiPatchLoader (data_t *binData, u32 binSize, bool clearBSS)
 	return true;
 }
 
-int runNds (const void* loader, u32 loaderSize, u32 cluster, bool initDisc, bool dldiPatchNds, int argc, const char** argv, bool clearMasterBright, bool dsModeSwitch, bool boostCpu, bool boostVram)
+int runNds (const void* loader, u32 loaderSize, u32 cluster, bool fromNitro, bool initDisc, bool dldiPatchNds, int argc, const char** argv, bool clearMasterBright, bool dsModeSwitch, bool boostCpu, bool boostVram)
 {
 	char* argStart;
 	u16* argData;
@@ -294,6 +296,7 @@ int runNds (const void* loader, u32 loaderSize, u32 cluster, bool initDisc, bool
 		writeAddr ((data_t*) LCDC_BANK_C, HAVE_DSISD_OFFSET, 1);
 	}
 
+	writeAddr ((data_t*) LCDC_BANK_C, NITRO_OFFSET, fromNitro);
 	writeAddr ((data_t*) LCDC_BANK_C, CLEAR_MASTER_BRIGHT_OFFSET, clearMasterBright);
 	if (isDSiMode()) {
 		writeAddr ((data_t*) LCDC_BANK_C, DSMODE_SWITCH_OFFSET, dsModeSwitch);
@@ -371,10 +374,17 @@ int runNdsFile (const char* filename, int argc, const char** argv, bool dldiPatc
 	char filePath[PATH_MAX];
 	int pathLen;
 	const char* args[1];
+	bool fromNitro = (strncmp(filename, "nitro:", 6) == 0);
 
 	
 	if (stat (filename, &st) < 0) {
 		return 1;
+	}
+
+	if (fromNitro) {
+		FILE* ndsFile = fopen(filename, "rb");
+		fread((void*)0x02280000, 1, 0xC0000, ndsFile);
+		fclose(ndsFile);
 	}
 
 	if (argc <= 0 || !argv) {
@@ -394,7 +404,7 @@ int runNdsFile (const char* filename, int argc, const char** argv, bool dldiPatc
 	
 	installBootStub(havedsiSD);
 
-	return runNds (load_bin, load_bin_size, st.st_ino, true, (dldiPatchNds && memcmp(io_dldi_data->friendlyName, "Default", 7) != 0), argc, argv, clearMasterBright, dsModeSwitch, boostCpu, boostVram);
+	return runNds (load_bin, load_bin_size, st.st_ino, fromNitro, true, (dldiPatchNds && memcmp(io_dldi_data->friendlyName, "Default", 7) != 0), argc, argv, clearMasterBright, dsModeSwitch, boostCpu, boostVram);
 }
 
 /*

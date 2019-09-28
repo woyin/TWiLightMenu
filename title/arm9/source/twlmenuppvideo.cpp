@@ -512,7 +512,7 @@ void twlMenuVideo(void) {
 	}
 
 	// Change TWL letters to user color
-	snprintf(videoFrameFilename, sizeof(videoFrameFilename), "nitro:/graphics/TWL_%i.bmp", (int)PersonalData->theme);
+	snprintf(videoFrameFilename, sizeof(videoFrameFilename), "nitro:/title/graphics/TWL_%i.bmp", (int)PersonalData->theme);
 	videoFrameFile = fopen(videoFrameFilename, "rb");
 
 	if (videoFrameFile) {
@@ -539,7 +539,7 @@ void twlMenuVideo(void) {
 	fclose(videoFrameFile);
 	
 	// Load RocketVideo logo
-	videoFrameFile = fopen("nitro:/graphics/logo_rocketvideo.bmp", "rb");
+	videoFrameFile = fopen("nitro:/title/graphics/logo_rocketvideo.bmp", "rb");
 
 	if (videoFrameFile) {
 		// Start loading

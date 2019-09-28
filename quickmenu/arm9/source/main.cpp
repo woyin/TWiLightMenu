@@ -57,7 +57,6 @@
 #include "crc.h"
 
 #include "soundbank.h"
-#include "soundbank_bin.h"
 
 #include "sr_data_srllastran.h"	// For rebooting into the game
 
@@ -781,7 +780,12 @@ mm_sound_effect snd_switch;
 mm_sound_effect snd_backlight;
 
 void InitSound() {
-	mmInitDefaultMem((mm_addr)soundbank_bin);
+	// Load sound bank into memory
+	FILE* soundBank = fopen("nitro:/quickmenu/soundbank.bin", "rb");
+	fread((void*)0x023A0000, 1, 0x40000, soundBank);
+	fclose(soundBank);
+
+	mmInitDefaultMem((mm_addr)soundBank);
 	
 	mmLoadEffect( SFX_LAUNCH );
 	mmLoadEffect( SFX_SELECT );
@@ -1043,7 +1047,7 @@ int main(int argc, char **argv) {
 		stop();
 	}
 
-	nitroFSInit("/_nds/TWiLightMenu/mainmenu.srldr");
+	nitroFSInit(argv[0]);
 
 	if (access(settingsinipath, F_OK) != 0 && flashcardFound()) {
 		settingsinipath = "fat:/_nds/TWiLightMenu/settings.ini";		// Fallback to .ini path on flashcard, if not found on SD card, or if SD access is disabled

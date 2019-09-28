@@ -223,9 +223,9 @@ void LoadBMP(void) {
 	fclose(file);
 
 	if (ms().useBootstrap || isDSiMode()) {		// Show nds-bootstrap logo, if nds-bootstrap is set to be used
-		file = fopen("nitro:/graphics/logo_rocketrobzbootstrap.bmp", "rb");
+		file = fopen("nitro:/title/graphics/logo_rocketrobzbootstrap.bmp", "rb");
 	} else {
-		file = fopen("nitro:/graphics/logo_rocketrobz.bmp", "rb");
+		file = fopen("nitro:/title/graphics/logo_rocketrobz.bmp", "rb");
 	}
 
 	if (file) {

@@ -105,10 +105,10 @@ void BootSplashDSi(void) {
 
 		//If french, then use the french hsmsh, else, use the english one
 		if (language != 2){
-			file = fopen("nitro:/graphics/hsmsg.bmp", "rb");
+			file = fopen("nitro:/title/graphics/hsmsg.bmp", "rb");
 		}
 		else {
-			file = fopen("nitro:/graphics/hsmsg-fr.bmp", "rb");
+			file = fopen("nitro:/title/graphics/hsmsg-fr.bmp", "rb");
 		}
 
 		if (file) {

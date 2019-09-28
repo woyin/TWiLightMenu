@@ -200,7 +200,7 @@ u16 convertVramColorToGrayscale(u16 val) {
 }
 
 void bottomBgLoad(void) {
-	FILE* file = fopen("nitro:/graphics/bottombg.bmp", "rb");
+	FILE* file = fopen("nitro:/quickmenu/graphics/bottombg.bmp", "rb");
 
 	if (file) {
 		// Start loading
@@ -458,7 +458,7 @@ void loadBoxArt(const char* filename) {
 }
 
 void topBgLoad(void) {
-	FILE* file = fopen("nitro:/graphics/topbg.bmp", "rb");
+	FILE* file = fopen("nitro:/quickmenu/graphics/topbg.bmp", "rb");
 
 	if (file) {
 		// Start loading
@@ -485,7 +485,7 @@ void topBgLoad(void) {
 
 void topBarLoad(void) {
 	char filePath[256];
-	snprintf(filePath, sizeof(filePath), "nitro:/graphics/topbar/%i.bmp", PersonalData->theme);
+	snprintf(filePath, sizeof(filePath), "nitro:/quickmenu/graphics/topbar/%i.bmp", PersonalData->theme);
 	FILE* file = fopen(filePath, "rb");
 
 	if (file) {

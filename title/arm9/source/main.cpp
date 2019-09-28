@@ -160,7 +160,9 @@ void loadMainMenu()
 		swiWaitForVBlank();
 	fifoSendValue32(FIFO_USER_01, 0); // Cancel sound fade out
 
-	runNdsFile("/_nds/TWiLightMenu/mainmenu.srldr", 0, NULL, true, false, false, true, true);
+	vector<char *> argarray;
+	argarray.push_back((char*)"/_nds/TWiLightMenu/main.srldr");
+	runNdsFile("nitro:/quickmenu/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
 }
 
 void loadROMselect(int number)
@@ -575,7 +577,7 @@ int main(int argc, char **argv)
 
 	if (ms().dsiSplash || ms().showlogo) {
 		// Load sound bank into memory
-		FILE* soundBank = fopen("nitro:/soundbank.bin", "rb");
+		FILE* soundBank = fopen("nitro:/title/soundbank.bin", "rb");
 		fread((void*)0x023A0000, 1, 0x58000, soundBank);
 		fclose(soundBank);
 	}
@@ -618,6 +620,9 @@ int main(int argc, char **argv)
 		}
 		twlMenuVideo();
 	}
+
+	extern bool rocketVideo_playVideo;
+	rocketVideo_playVideo = false;
 
 	scanKeys();
 
