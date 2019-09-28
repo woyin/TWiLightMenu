@@ -22,7 +22,6 @@ package: all
 	@cp "rungame/rungame.nds" "$(PACKAGE)/DSi - CFW users/SDNAND root/title/00030015/534c524e/content/00000000.app"
 
 	@mkdir -p "$(PACKAGE)/_nds/TWiLightMenu"
-	@cp "quickmenu/mainmenu.nds" "$(PACKAGE)/_nds/TWiLightMenu/mainmenu.srldr"
 	@cp "manual/manual.nds" "$(PACKAGE)/_nds/TWiLightMenu/manual.srldr"
 	@cp "romsel_aktheme/romsel_aktheme.nds" "$(PACKAGE)/_nds/TWiLightMenu/akmenu.srldr"
 	@cp "romsel_dsimenutheme/romsel_dsimenutheme.nds" "$(PACKAGE)/_nds/TWiLightMenu/dsimenu.srldr"
