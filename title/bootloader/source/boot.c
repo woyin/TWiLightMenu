@@ -59,7 +59,7 @@ void arm7clearRAM();
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Important things
-#define NDS_LOC  0x02280000
+#define NDS_LOC  0x02200000
 #define TEMP_MEM 0x02FFD000
 #define TWL_HEAD 0x02FFE000
 #define NDS_HEAD 0x02FFFE00
@@ -202,7 +202,7 @@ void resetMemory_ARM7 (void)
 	arm7clearRAM();
 	if (fromNitro) {
 		toncset((void*)0x02000000, 0, (u32)NDS_LOC-0x02000000);
-		toncset((void*)0x02340000, 0, (dsiMode ? 0xC0000 : 0xC0000-0xC000));
+		toncset((void*)0x02300000, 0, (dsiMode ? 0x100000 : 0x100000-0xC000));
 	} else {
 		// clear most of EWRAM - except after RAM end - 0xc000, which has the bootstub
 		toncset((void*)0x02000000, 0, (dsiMode ? 0x400000 : 0x400000-0xC000));
@@ -307,7 +307,7 @@ void loadBinary_ARM7 (u32 fileCluster)
 	}
 
 	if (fromNitro) {
-		toncset((void*)NDS_LOC, 0, 0xC0000);	// Clean .nds file from memory, after loading
+		toncset((void*)NDS_LOC, 0, 0x100000);	// Clean .nds file from memory, after loading
 	}
 }
 
