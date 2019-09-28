@@ -85,7 +85,6 @@ clean:
 	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/akmenu.srldr"
 	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/dsimenu.srldr"
 	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/main.srldr"
-	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/mainmenu.srldr"
 	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/manual.srldr"
 	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/r4menu.srldr"
 	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/settings.srldr"
