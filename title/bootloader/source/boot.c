@@ -47,7 +47,6 @@ Helpful information:
 #define ARM7
 #include <nds/arm7/audio.h>
 #include <nds/arm7/codec.h>
-#include "tonccpy.h"
 #include "sdmmc.h"
 #include "i2c.h"
 #include "fat.h"
@@ -59,7 +58,6 @@ void arm7clearRAM();
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Important things
-#define NDS_LOC  0x02200000
 #define TEMP_MEM 0x02FFD000
 #define TWL_HEAD 0x02FFE000
 #define NDS_HEAD 0x02FFFE00
@@ -76,7 +74,7 @@ extern unsigned long argStart;
 extern unsigned long argSize;
 extern unsigned long dsiSD;
 extern unsigned long dsiMode;
-extern unsigned long fromNitro;
+extern unsigned long offsetInNitro;
 extern unsigned long clearMasterBright;
 extern unsigned long dsMode;
 
@@ -200,17 +198,6 @@ void resetMemory_ARM7 (void)
 	}
 
 	arm7clearRAM();
-	if (fromNitro) {
-		toncset((void*)0x02000000, 0, (u32)NDS_LOC-0x02000000);
-		toncset((void*)0x02300000, 0, (dsiMode ? 0x100000 : 0x100000-0xC000));
-	} else {
-		// clear most of EWRAM - except after RAM end - 0xc000, which has the bootstub
-		toncset((void*)0x02000000, 0, (dsiMode ? 0x400000 : 0x400000-0xC000));
-	}
-	if (dsiMode) {
-		// clear most of EWRAM - except after RAM end - 0xc000, which has the bootstub
-		toncset((void*)0x02400000, 0, 0xC00000-0xC000);
-	}
 
 	REG_IE = 0;
 	REG_IF = ~0;
@@ -246,11 +233,7 @@ void loadBinary_ARM7 (u32 fileCluster)
 	u32 ndsHeader[0x170>>2];
 
 	// read NDS header
-	if (fromNitro) {
-		tonccpy((char*)ndsHeader, (char*)NDS_LOC, 0x170);
-	} else {
-		fileRead ((char*)ndsHeader, fileCluster, 0, 0x170);
-	}
+	fileRead ((char*)ndsHeader, fileCluster, offsetInNitro+0, 0x170);
 	// read ARM9 info from NDS header
 	u32 ARM9_SRC = ndsHeader[0x020>>2];
 	char* ARM9_DST = (char*)ndsHeader[0x028>>2];
@@ -263,13 +246,8 @@ void loadBinary_ARM7 (u32 fileCluster)
 	ROM_TID = ndsHeader[0x00C>>2];
 
 	// Load binaries into memory
-	if (fromNitro) {
-		tonccpy(ARM9_DST, (char*)NDS_LOC+ARM9_SRC, ARM9_LEN);
-		tonccpy(ARM7_DST, (char*)NDS_LOC+ARM7_SRC, ARM7_LEN);
-	} else {
-		fileRead(ARM9_DST, fileCluster, ARM9_SRC, ARM9_LEN);
-		fileRead(ARM7_DST, fileCluster, ARM7_SRC, ARM7_LEN);
-	}
+	fileRead(ARM9_DST, fileCluster, offsetInNitro+ARM9_SRC, ARM9_LEN);
+	fileRead(ARM7_DST, fileCluster, offsetInNitro+ARM7_SRC, ARM7_LEN);
 
 	// first copy the header to its proper location, excluding
 	// the ARM9 start address, so as not to start it
@@ -280,11 +258,7 @@ void loadBinary_ARM7 (u32 fileCluster)
 	if (!dsMode && dsiMode && (ndsHeader[0x10>>2]&BIT(16+1)))
 	{
 		// Read full TWL header
-		if (fromNitro) {
-			tonccpy((char*)TWL_HEAD, (char*)NDS_LOC, 0x1000);
-		} else {
-			fileRead((char*)TWL_HEAD, fileCluster, 0, 0x1000);
-		}
+		fileRead((char*)TWL_HEAD, fileCluster, offsetInNitro+0, 0x1000);
 
 		u32 ARM9i_SRC = *(u32*)(TWL_HEAD+0x1C0);
 		char* ARM9i_DST = (char*)*(u32*)(TWL_HEAD+0x1C8);
@@ -293,21 +267,10 @@ void loadBinary_ARM7 (u32 fileCluster)
 		char* ARM7i_DST = (char*)*(u32*)(TWL_HEAD+0x1D8);
 		u32 ARM7i_LEN = *(u32*)(TWL_HEAD+0x1DC);
 
-		if (fromNitro) {
-			if (ARM9i_LEN)
-				tonccpy(ARM9i_DST, (char*)NDS_LOC+ARM9i_SRC, ARM9i_LEN);
-			if (ARM7i_LEN)
-				tonccpy(ARM7i_DST, (char*)NDS_LOC+ARM7i_SRC, ARM7i_LEN);
-		} else {
-			if (ARM9i_LEN)
-				fileRead(ARM9i_DST, fileCluster, ARM9i_SRC, ARM9i_LEN);
-			if (ARM7i_LEN)
-				fileRead(ARM7i_DST, fileCluster, ARM7i_SRC, ARM7i_LEN);
-		}
-	}
-
-	if (fromNitro) {
-		toncset((void*)NDS_LOC, 0, 0x100000);	// Clean .nds file from memory, after loading
+		if (ARM9i_LEN)
+			fileRead(ARM9i_DST, fileCluster, offsetInNitro+ARM9i_SRC, ARM9i_LEN);
+		if (ARM7i_LEN)
+			fileRead(ARM7i_DST, fileCluster, offsetInNitro+ARM7i_SRC, ARM7i_LEN);
 	}
 }
 
@@ -510,20 +473,18 @@ int main (void) {
 	sdRead = (dsiSD && dsiMode);
 #endif
 	u32 fileCluster = storedFileCluster;
-	if (!fromNitro) {
-		// Init card
-		if(!FAT_InitFiles(initDisc))
-		{
-			return -1;
-		}
-		if ((fileCluster < CLUSTER_FIRST) || (fileCluster >= CLUSTER_EOF)) 	/* Invalid file cluster specified */
-		{
-			fileCluster = getBootFileCluster(bootName);
-		}
-		if (fileCluster == CLUSTER_FREE)
-		{
-			return -1;
-		}
+	// Init card
+	if(!FAT_InitFiles(initDisc))
+	{
+		return -1;
+	}
+	if ((fileCluster < CLUSTER_FIRST) || (fileCluster >= CLUSTER_EOF)) 	/* Invalid file cluster specified */
+	{
+		fileCluster = getBootFileCluster(bootName);
+	}
+	if (fileCluster == CLUSTER_FREE)
+	{
+		return -1;
 	}
 
 	// ARM9 clears its memory part 2

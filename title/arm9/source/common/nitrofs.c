@@ -334,6 +334,49 @@ int nitroFSDirNext(struct _reent *r, DIR_ITER *dirState, char *filename, struct 
 }
 
 //fs functs
+off_t nitro_getFileOffset(const char *path)
+{
+    struct nitroDIRStruct dirStruct;
+    DIR_ITER dirState;
+    dirState.dirStruct = &dirStruct; //create a temp dirstruct
+    struct _reent dre;
+    struct stat st;                     //all these are just used for reading the dir ~_~
+    char dirfilename[NITROMAXPATHLEN];  // to hold a full path (i tried to avoid using so much stack but blah :/)
+    char *filename;                     // to hold filename
+    char *cptr;                         //used to string searching and manipulation
+    cptr = (char *)path + strlen(path); //find the end...
+    filename = NULL;
+    do
+    {
+        if ((*cptr == '/') || (*cptr == ':'))
+        { // split at either / or : (whichever comes first form the end!)
+            cptr++;
+            strncpy(dirfilename, path, cptr - path); //copy string up till and including/ or : zero rest
+            dirfilename[cptr - path] = 0;            //it seems strncpy doesnt always zero?!
+            filename = cptr;                         //filename = now remainder of string
+            break;
+        }
+    } while (cptr-- != path); //search till start
+    if (!filename)
+    {                            //we didnt find a / or : ? shouldnt realyl happen but if it does...
+        filename = (char *)path; //filename = complete path
+        dirfilename[0] = 0;      //make directory path ""
+    }
+    if (nitroFSDirOpen(&dre, &dirState, dirfilename))
+    {
+        while (nitroFSDirNext(&dre, &dirState, dirfilename, &st) == 0)
+        {
+            if (!(st.st_mode & S_IFDIR) && (strcmp(dirfilename, filename) == 0))
+            { //Found the *file* youre looking for!!
+                return (hasLoader ? dirStruct.romfat.top+LOADEROFFSET : dirStruct.romfat.top);
+                break;
+            }
+        }
+        nitroFSDirClose(&dre, &dirState);
+    }
+    return (-1); //teh fail
+}
+
 int nitroFSOpen(struct _reent *r, void *fileStruct, const char *path, int flags, int mode)
 {
     struct nitroFSStruct *fatStruct = (struct nitroFSStruct *)fileStruct;

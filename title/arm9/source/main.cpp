@@ -162,9 +162,9 @@ void loadMainMenu()
 	mmEffectCancelAll();
 	fifoSendValue32(FIFO_USER_01, 0); // Cancel sound fade out
 
-	vector<char *> argarray;
-	argarray.push_back((char*)"/_nds/TWiLightMenu/main.srldr");
-	runNdsFile("nitro:/quickmenu/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
+	//vector<char *> argarray;
+	//argarray.push_back((char*)"/_nds/TWiLightMenu/main.srldr");
+	runNdsFile("/_nds/TWiLightMenu/main.srldr", "nitro:/quickmenu/exe.srldr", 0, NULL, true, false, false, true, true);
 }
 
 void loadROMselect(int number)
@@ -180,13 +180,13 @@ void loadROMselect(int number)
 	argarray.push_back((char*)"/_nds/TWiLightMenu/main.srldr");
 	switch (number) {
 		case 3:
-			runNdsFile("nitro:/akmenu/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
+			runNdsFile("/_nds/TWiLightMenu/main.srldr", "nitro:/akmenu/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
 			break;
 		case 2:
-			runNdsFile("nitro:/r4menu/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
+			runNdsFile("/_nds/TWiLightMenu/main.srldr", "nitro:/r4menu/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
 			break;
 		default:
-			runNdsFile("/_nds/TWiLightMenu/dsimenu.srldr", 0, NULL, true, false, false, true, true);
+			runNdsFile("/_nds/TWiLightMenu/main.srldr", "/_nds/TWiLightMenu/dsimenu.srldr", 0, NULL, true, false, false, true, true);
 			break;
 	}
 	stop();
@@ -238,7 +238,7 @@ void lastRunROM()
 	int err = 0;
 	if (ms().launchType == Launch::ESlot1)
 	{
-		err = runNdsFile("/_nds/TWiLightMenu/slot1launch.srldr", 0, NULL, true, true, false, true, true);
+		err = runNdsFile("/_nds/TWiLightMenu/slot1launch.srldr", NULL, 0, NULL, true, true, false, true, true);
 	}
 	else if (ms().launchType == Launch::ESDFlashcardLaunch)
 	{
@@ -358,7 +358,7 @@ void lastRunROM()
 			}
 			bootstrapini.SaveIniFile( sdFound() ? BOOTSTRAP_INI_SD : BOOTSTRAP_INI_FC );
 
-			err = runNdsFile(argarray[0], argarray.size(), (const char **)&argarray[0], (ms().homebrewBootstrap ? false : true), true, false, true, true);
+			err = runNdsFile(argarray[0], NULL, argarray.size(), (const char **)&argarray[0], (ms().homebrewBootstrap ? false : true), true, false, true, true);
 		}
 		else
 		{
@@ -390,26 +390,26 @@ void lastRunROM()
 				path = ReplaceAll(ms().romPath, "fat:/", woodfat);
 				fcrompathini.SetString("Save Info", "lastLoaded", path);
 				fcrompathini.SaveIniFile("fat:/_wfwd/lastsave.ini");
-				err = runNdsFile("fat:/Wfwd.dat", 0, NULL, true, true, true, runNds_boostCpu, runNds_boostVram);
+				err = runNdsFile("fat:/Wfwd.dat", NULL, 0, NULL, true, true, true, runNds_boostCpu, runNds_boostVram);
 			} else if (memcmp(io_dldi_data->friendlyName, "Acekard AK2", 0xB) == 0) {
 				CIniFile fcrompathini("fat:/_afwd/lastsave.ini");
 				path = ReplaceAll(ms().romPath, "fat:/", woodfat);
 				fcrompathini.SetString("Save Info", "lastLoaded", path);
 				fcrompathini.SaveIniFile("fat:/_afwd/lastsave.ini");
-				err = runNdsFile("fat:/Afwd.dat", 0, NULL, true, true, true, runNds_boostCpu, runNds_boostVram);
+				err = runNdsFile("fat:/Afwd.dat", NULL, 0, NULL, true, true, true, runNds_boostCpu, runNds_boostVram);
 			} else if (memcmp(io_dldi_data->friendlyName, "DSTWO(Slot-1)", 0xD) == 0) {
 				CIniFile fcrompathini("fat:/_dstwo/autoboot.ini");
 				path = ReplaceAll(ms().romPath, "fat:/", dstwofat);
 				fcrompathini.SetString("Dir Info", "fullName", path);
 				fcrompathini.SaveIniFile("fat:/_dstwo/autoboot.ini");
-				err = runNdsFile("fat:/_dstwo/autoboot.nds", 0, NULL, true, true, true, runNds_boostCpu, runNds_boostVram);
+				err = runNdsFile("fat:/_dstwo/autoboot.nds", NULL, 0, NULL, true, true, true, runNds_boostCpu, runNds_boostVram);
 			} else if (memcmp(io_dldi_data->friendlyName, "R4(DS) - Revolution for DS (v2)", 0xB) == 0) {
 				CIniFile fcrompathini("fat:/__rpg/lastsave.ini");
 				path = ReplaceAll(ms().romPath, "fat:/", woodfat);
 				fcrompathini.SetString("Save Info", "lastLoaded", path);
 				fcrompathini.SaveIniFile("fat:/__rpg/lastsave.ini");
 				// Does not support autoboot; so only nds-bootstrap launching works.
-				err = runNdsFile(path.c_str(), 0, NULL, true, true, true, runNds_boostCpu, runNds_boostVram);
+				err = runNdsFile(path.c_str(), NULL, 0, NULL, true, true, true, runNds_boostCpu, runNds_boostVram);
 			}
 		}
 	}
@@ -427,7 +427,7 @@ void lastRunROM()
 		runNds_boostCpu = perGameSettings_boostCpu == -1 ? ms().boostCpu : perGameSettings_boostCpu;
 		runNds_boostVram = perGameSettings_boostVram == -1 ? ms().boostVram : perGameSettings_boostVram;
 
-		err = runNdsFile (argarray[0], argarray.size(), (const char **)&argarray[0], true, true, (!perGameSettings_dsiMode ? true : false), runNds_boostCpu, runNds_boostVram);
+		err = runNdsFile (argarray[0], NULL, argarray.size(), (const char **)&argarray[0], true, true, (!perGameSettings_dsiMode ? true : false), runNds_boostCpu, runNds_boostVram);
 	}
 	else if (ms().launchType == Launch::EDSiWareLaunch)
 	{
@@ -477,7 +477,7 @@ void lastRunROM()
 		{
 			argarray.at(0) = (char*)"sd:/_nds/TWiLightMenu/emulators/nestwl.nds";
 		}
-		err = runNdsFile(argarray[0], argarray.size(), (const char **)&argarray[0], true, true, false, true, true); // Pass ROM to nesDS as argument
+		err = runNdsFile(argarray[0], NULL, argarray.size(), (const char **)&argarray[0], true, true, false, true, true); // Pass ROM to nesDS as argument
 	}
 	else if (ms().launchType == Launch::EGameYobLaunch)
 	{
@@ -491,7 +491,7 @@ void lastRunROM()
 		{
 			argarray.at(0) = (char*)"sd:/_nds/TWiLightMenu/emulators/gameyob.nds";
 		}
-		err = runNdsFile(argarray[0], argarray.size(), (const char **)&argarray[0], true, true, false, true, true); // Pass ROM to GameYob as argument
+		err = runNdsFile(argarray[0], NULL, argarray.size(), (const char **)&argarray[0], true, true, false, true, true); // Pass ROM to GameYob as argument
 	}
 	else if (ms().launchType == Launch::ES8DSLaunch)
 	{
@@ -509,7 +509,7 @@ void lastRunROM()
 			mkdir("sd:/data/s8ds", 0777);
 			argarray.at(0) = (char*)"sd:/_nds/TWiLightMenu/emulators/S8DS.nds";
 		}
-		err = runNdsFile(argarray[0], argarray.size(), (const char **)&argarray[0], true, true, false, true, true); // Pass ROM to S8DS as argument
+		err = runNdsFile(argarray[0], NULL, argarray.size(), (const char **)&argarray[0], true, true, false, true, true); // Pass ROM to S8DS as argument
 	}
 }
 
@@ -647,7 +647,7 @@ int main(int argc, char **argv)
 
 			vector<char *> argarray;
 			argarray.push_back((char*)"/_nds/TWiLightMenu/main.srldr");
-			runNdsFile("nitro:/settings/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
+			runNdsFile("/_nds/TWiLightMenu/main.srldr", "nitro:/settings/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
 		} else {
 			flashcardInit();
 			if (ms().showMainMenu) {
