@@ -45,7 +45,6 @@
 #include "inifile.h"
 
 #include "soundbank.h"
-#include "soundbank_bin.h"
 
 struct DirEntry {
 	std::string name;
@@ -218,7 +217,12 @@ mm_sound_effect snd_back;
 mm_sound_effect snd_switch;
 
 void InitSound() {
-	mmInitDefaultMem((mm_addr)soundbank_bin);
+	// Load sound bank into memory
+	FILE* soundBank = fopen("nitro:/manual/soundbank.bin", "rb");
+	fread((void*)0x023A0000, 1, 0x40000, soundBank);
+	fclose(soundBank);
+
+	mmInitDefaultMem((mm_addr)0x023A0000);
 	
 	mmLoadEffect( SFX_LAUNCH );
 	mmLoadEffect( SFX_SELECT );
@@ -366,7 +370,7 @@ int main(int argc, char **argv) {
 		stop();
 	}
 
-	nitroFSInit("/_nds/TWiLightMenu/manual.srldr");
+	nitroFSInit(argv[0]);
 
 	if ((access(settingsinipath, F_OK) != 0) && (access("fat:/", F_OK) == 0)) {
 		settingsinipath = "fat:/_nds/TWiLightMenu/settings.ini";		// Fallback to .ini path on flashcard, if not found on SD card, or if SD access is disabled
@@ -426,7 +430,7 @@ int main(int argc, char **argv) {
 
 	InitSound();
 
-	chdir("nitro:/pages/");
+	chdir("nitro:/manual/pages/");
 	loadPageList();
 	loadPageInfo(manPagesList[0].name.substr(0,manPagesList[0].name.length()-3) + "ini");
 	pageLoad(manPagesList[0].name.c_str());

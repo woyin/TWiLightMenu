@@ -215,7 +215,7 @@ void pageLoad(const char *filename) {
 void topBarLoad(void) {
 	std::vector<unsigned char> image;
 	unsigned width, height;
-	lodepng::decode(image, width, height, "nitro:/graphics/topbar.png");
+	lodepng::decode(image, width, height, "nitro:/manual/graphics/topbar.png");
 	printSmallCentered(true, 0, "str");
 	for(unsigned i=0;i<image.size()/4;i++) {
   		BG_GFX_SUB[i] = image[i*4]>>3 | (image[(i*4)+1]>>3)<<5 | (image[(i*4)+2]>>3)<<10 | BIT(15);
@@ -460,7 +460,7 @@ void graphicsInit()
 	// Load top bar font into ram
 	std::vector<unsigned char> image;
 	unsigned width, height;
-	lodepng::decode(image, width, height, "nitro:/graphics/small_font.png");
+	lodepng::decode(image, width, height, "nitro:/manual/graphics/small_font.png");
 	for(unsigned i=0;i<image.size()/4;i++) {
   		smallFontCache[i] = image[i*4]>>3 | (image[(i*4)+1]>>3)<<5 | (image[(i*4)+2]>>3)<<10 | BIT(15);
 	}

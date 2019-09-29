@@ -83,5 +83,4 @@ clean:
 	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/akmenu.srldr"
 	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/dsimenu.srldr"
 	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/main.srldr"
-	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/manual.srldr"
 	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/slot1launch.srldr"
