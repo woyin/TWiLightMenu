@@ -785,7 +785,7 @@ void InitSound() {
 	fread((void*)0x023A0000, 1, 0x40000, soundBank);
 	fclose(soundBank);
 
-	mmInitDefaultMem((mm_addr)soundBank);
+	mmInitDefaultMem((mm_addr)0x023A0000);
 	
 	mmLoadEffect( SFX_LAUNCH );
 	mmLoadEffect( SFX_SELECT );
