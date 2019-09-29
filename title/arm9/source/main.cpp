@@ -183,7 +183,7 @@ void loadROMselect(int number)
 			break;
 		case 2:
 			argarray.push_back((char*)"/_nds/TWiLightMenu/main.srldr");
-			runNdsFile("nitro:/r4menu/exe.srldr", 0, NULL, true, false, false, true, true);
+			runNdsFile("nitro:/r4menu/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
 			break;
 		default:
 			runNdsFile("/_nds/TWiLightMenu/dsimenu.srldr", 0, NULL, true, false, false, true, true);
