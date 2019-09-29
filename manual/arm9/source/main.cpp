@@ -275,7 +275,7 @@ void InitSound() {
 	};
 }
 
-void loadROMselect()
+void loadROMselect(const char* runningPath)
 {
 	mmEffectEx(&snd_back);
 	fadeType = false;	// Fade out to white
@@ -283,13 +283,16 @@ void loadROMselect()
 		swiWaitForVBlank();
 	}
 	chdir((access("sd:/", F_OK) == 0) ? "sd:/" : "fat:/");
+
+	vector<char *> argarray;
 	if (theme == 3)
 	{
 		runNdsFile("/_nds/TWiLightMenu/akmenu.srldr", 0, NULL, true, false, false, true, true);
 	}
 	else if (theme == 2)
 	{
-		runNdsFile("/_nds/TWiLightMenu/r4menu.srldr", 0, NULL, true, false, false, true, true);
+		argarray.push_back((char*)runningPath);
+		runNdsFile("nitro:/r4menu/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
 	}
 	else
 	{
@@ -555,7 +558,7 @@ int main(int argc, char **argv) {
 			}
 		}
 		if (pressed & KEY_START) {
-			loadROMselect();
+			loadROMselect(argv[0]);
 		}
 	}
 
