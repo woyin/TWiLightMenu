@@ -28,7 +28,6 @@ copy "romsel_dsimenutheme.nds" "../7zfile/_nds/TWiLightMenu/dsimenu.srldr"
 cd ..
 cd "romsel_r4theme"
 make
-copy "romsel_r4theme.nds" "../7zfile/_nds/TWiLightMenu/r4menu.srldr"
 cd ..
 cd "title"
 make
