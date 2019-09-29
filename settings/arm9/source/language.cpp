@@ -260,24 +260,24 @@ void langInit(void)
 {
 	switch (ms().getGuiLanguage()) {
 		case 0:
-			languageIniPath = "nitro:/languages/japanese.ini";
+			languageIniPath = "nitro:/settings/languages/japanese.ini";
 			break;
 		case 1:
 		case 6:
 		default:
-			languageIniPath = "nitro:/languages/english.ini";
+			languageIniPath = "nitro:/settings/languages/english.ini";
 			break;
 		case 2:
-			languageIniPath = "nitro:/languages/french.ini";
+			languageIniPath = "nitro:/settings/languages/french.ini";
 			break;
 		case 3:
-			languageIniPath = "nitro:/languages/german.ini";
+			languageIniPath = "nitro:/settings/languages/german.ini";
 			break;
 		case 4:
-			languageIniPath = "nitro:/languages/italian.ini";
+			languageIniPath = "nitro:/settings/languages/italian.ini";
 			break;
 		case 5:
-			languageIniPath = "nitro:/languages/spanish.ini";
+			languageIniPath = "nitro:/settings/languages/spanish.ini";
 			break;
 	}
 

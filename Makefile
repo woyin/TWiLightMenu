@@ -26,7 +26,6 @@ package: all
 	@cp "romsel_aktheme/romsel_aktheme.nds" "$(PACKAGE)/_nds/TWiLightMenu/akmenu.srldr"
 	@cp "romsel_dsimenutheme/romsel_dsimenutheme.nds" "$(PACKAGE)/_nds/TWiLightMenu/dsimenu.srldr"
 	@cp "romsel_r4theme/romsel_r4theme.nds" "$(PACKAGE)/_nds/TWiLightMenu/r4menu.srldr"
-	@cp "settings/settings.nds" "$(PACKAGE)/_nds/TWiLightMenu/settings.srldr"
 	@cp "slot1launch/slot1launch.nds" "$(PACKAGE)/_nds/TWiLightMenu/slot1launch.srldr"
 	@cp "title/title.nds" "$(PACKAGE)/_nds/TWiLightMenu/main.srldr"
 
@@ -87,5 +86,4 @@ clean:
 	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/main.srldr"
 	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/manual.srldr"
 	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/r4menu.srldr"
-	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/settings.srldr"
 	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/slot1launch.srldr"

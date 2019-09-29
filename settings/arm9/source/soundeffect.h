@@ -2,7 +2,6 @@
 #include <maxmod9.h>
 
 #include "soundbank.h"
-#include "soundbank_bin.h"
 
 #pragma once
 #ifndef _DSIMENUPP_SOUNDEFFECT_H_
@@ -19,7 +18,8 @@ class SoundEffect
 
     void init()
     {
-        mmInitDefaultMem((mm_addr)soundbank_bin);
+		extern char soundBank[0x100000];
+        mmInitDefaultMem((mm_addr)soundBank);
 
         mmLoadEffect(SFX_LAUNCH);
         mmLoadEffect(SFX_SATURNLAUNCH);

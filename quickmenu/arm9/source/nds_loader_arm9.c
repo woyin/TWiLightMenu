@@ -383,7 +383,7 @@ int runNdsFile (const char* filename, int argc, const char** argv, bool dldiPatc
 
 	if (fromNitro) {
 		FILE* ndsFile = fopen(filename, "rb");
-		fread((void*)0x02300000, 1, 0x80000, ndsFile);
+		fread((void*)0x022E0000, 1, 0xA0000, ndsFile);
 		fclose(ndsFile);
 	}
 

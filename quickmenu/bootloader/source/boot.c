@@ -59,7 +59,7 @@ void arm7clearRAM();
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Important things
-#define NDS_LOC  0x02300000
+#define NDS_LOC  0x022E0000
 #define TEMP_MEM 0x02FFD000
 #define TWL_HEAD 0x02FFE000
 #define NDS_HEAD 0x02FFFE00

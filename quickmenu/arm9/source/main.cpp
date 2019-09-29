@@ -1644,7 +1644,9 @@ int main(int argc, char **argv) {
 						if (sdFound()) {
 							chdir("sd:/");
 						}
-						int err = runNdsFile ("/_nds/TWiLightMenu/settings.srldr", 0, NULL, true, false, false, true, true);
+						vector<char *> argarray;
+						argarray.push_back((char*)argv[0]);
+						int err = runNdsFile("nitro:/settings/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
 						iprintf ("Start failed. Error %i\n", err);
 						break;
 				}

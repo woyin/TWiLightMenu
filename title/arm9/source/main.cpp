@@ -173,6 +173,7 @@ void loadROMselect(int number)
 	fifoSendValue32(FIFO_USER_01, 1); // Fade out sound
 	for (int i = 0; i < 25; i++)
 		swiWaitForVBlank();
+	mmEffectCancelAll();
 	fifoSendValue32(FIFO_USER_01, 0); // Cancel sound fade out
 
 	switch (number) {
@@ -636,10 +637,15 @@ int main(int argc, char **argv)
 	while (1) {
 		if (screenmode == 1) {
 			fadeType = false;
-			for (int i = 0; i < 25; i++) {
+			fifoSendValue32(FIFO_USER_01, 1); // Fade out sound
+			for (int i = 0; i < 25; i++)
 				swiWaitForVBlank();
-			}
-			runNdsFile("/_nds/TWiLightMenu/settings.srldr", 0, NULL, true, false, false, true, true);
+			mmEffectCancelAll();
+			fifoSendValue32(FIFO_USER_01, 0); // Cancel sound fade out
+
+			vector<char *> argarray;
+			argarray.push_back((char*)"/_nds/TWiLightMenu/main.srldr");
+			runNdsFile("nitro:/settings/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
 		} else {
 			flashcardInit();
 			if (ms().showMainMenu) {

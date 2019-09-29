@@ -51,6 +51,7 @@
 #include "bootstrapsettings.h"
 
 #include "soundeffect.h"
+char soundBank[0x100000];
 
 #include "sr_data_srllastran.h"			 // For rebooting into the game (NTR-mode touch screen)
 #include "sr_data_srllastran_twltouch.h" // For rebooting into the game (TWL-mode touch screen)
@@ -86,6 +87,8 @@ bool hiyaAutobootFound = false;
 */
 
 const char *hiyacfwinipath = "sd:/hiya/settings.ini";
+
+const char *runningPath;
 
 std::string homebrewArg;
 std::string bootstrapfilename;
@@ -173,7 +176,9 @@ void rebootTWLMenuPP()
 
 void loadMainMenu()
 {
-	runNdsFile("/_nds/TWiLightMenu/mainmenu.srldr", 0, NULL, true, false, false, true, true);
+	vector<char *> argarray;
+	argarray.push_back((char*)runningPath);
+	runNdsFile("nitro:/quickmenu/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
 }
 
 void loadROMselect()
@@ -367,7 +372,8 @@ int main(int argc, char **argv)
 	powerOn(PM_BACKLIGHT_BOTTOM);
 #pragma region init
 
-	sys().initFilesystem();
+	runningPath = argv[0];
+	sys().initFilesystem(argv[0]);
 	sys().flashcardUsed();
 	ms();
 	defaultExceptionHandler();
@@ -405,6 +411,10 @@ int main(int argc, char **argv)
 	loadDSiThemeList();
 	swiWaitForVBlank();
 
+	// Load sound bank into memory
+	FILE* soundBankBin = fopen("nitro:/settings/soundbank.bin", "rb");
+	fread(soundBank, 1, (int)sizeof(soundBank), soundBankBin);
+	fclose(soundBankBin);
 	snd().init();
 	keysSetRepeat(25, 5);
 	

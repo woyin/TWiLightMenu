@@ -16,13 +16,11 @@ cd "slot1launch"
 make
 copy "slot1launch.nds" "../7zfile/_nds/TWiLightMenu/slot1launch.srldr"
 cd ..
-cd "title"
-make
-copy "title.nds" "../7zfile/_nds/TWiLightMenu/main.srldr"
-cd ..
 cd "settings"
 make
-copy "settings.nds" "../7zfile/_nds/TWiLightMenu/settings.srldr"
+cd ..
+cd "quickmenu"
+make
 cd ..
 cd "romsel_dsimenutheme"
 make
@@ -31,5 +29,9 @@ cd ..
 cd "romsel_r4theme"
 make
 copy "romsel_r4theme.nds" "../7zfile/_nds/TWiLightMenu/r4menu.srldr"
+cd ..
+cd "title"
+make
+copy "title.nds" "../7zfile/_nds/TWiLightMenu/main.srldr"
 cd ..
 pause
