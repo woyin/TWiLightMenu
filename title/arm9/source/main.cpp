@@ -100,6 +100,8 @@ typedef DSiMenuPlusPlusSettings::TLaunchType Launch;
 int screenmode = 0;
 int subscreenmode = 0;
 
+const char *runningPath = "/_nds/TWiLightMenu/main.srldr";
+
 touchPosition touch;
 
 using namespace std;
@@ -162,9 +164,9 @@ void loadMainMenu()
 	mmEffectCancelAll();
 	fifoSendValue32(FIFO_USER_01, 0); // Cancel sound fade out
 
-	//vector<char *> argarray;
-	//argarray.push_back((char*)"/_nds/TWiLightMenu/main.srldr");
-	runNdsFile("/_nds/TWiLightMenu/main.srldr", "nitro:/quickmenu/exe.srldr", 0, NULL, true, false, false, true, true);
+	vector<char *> argarray;
+	argarray.push_back((char*)runningPath);
+	runNdsFile(argarray[0], "nitro:/quickmenu/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
 }
 
 void loadROMselect(int number)
@@ -177,16 +179,16 @@ void loadROMselect(int number)
 	fifoSendValue32(FIFO_USER_01, 0); // Cancel sound fade out
 
 	vector<char *> argarray;
-	argarray.push_back((char*)"/_nds/TWiLightMenu/main.srldr");
+	argarray.push_back((char*)runningPath);
 	switch (number) {
 		case 3:
-			runNdsFile("/_nds/TWiLightMenu/main.srldr", "nitro:/akmenu/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
+			runNdsFile(argarray[0], "nitro:/akmenu/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
 			break;
 		case 2:
-			runNdsFile("/_nds/TWiLightMenu/main.srldr", "nitro:/r4menu/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
+			runNdsFile(argarray[0], "nitro:/r4menu/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
 			break;
 		default:
-			runNdsFile("/_nds/TWiLightMenu/main.srldr", "/_nds/TWiLightMenu/dsimenu.srldr", 0, NULL, true, false, false, true, true);
+			runNdsFile("/_nds/TWiLightMenu/dsimenu.srldr", NULL, 0, NULL, true, false, false, true, true);
 			break;
 	}
 	stop();
@@ -531,7 +533,8 @@ int main(int argc, char **argv)
 	/*extern char *fake_heap_end;
 	*fake_heap_end = 0;*/
 
-	sys().initFilesystem("/_nds/TWiLightMenu/main.srldr");
+	if (argc > 0) runningPath = argv[0];
+	sys().initFilesystem(runningPath);
 	sys().flashcardUsed();
 	ms();
 	defaultExceptionHandler();
@@ -646,8 +649,8 @@ int main(int argc, char **argv)
 			fifoSendValue32(FIFO_USER_01, 0); // Cancel sound fade out
 
 			vector<char *> argarray;
-			argarray.push_back((char*)"/_nds/TWiLightMenu/main.srldr");
-			runNdsFile("/_nds/TWiLightMenu/main.srldr", "nitro:/settings/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
+			argarray.push_back((char*)runningPath);
+			runNdsFile(argarray[0], "nitro:/settings/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
 		} else {
 			flashcardInit();
 			if (ms().showMainMenu) {

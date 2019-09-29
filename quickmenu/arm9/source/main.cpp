@@ -1049,7 +1049,7 @@ int main(int argc, char **argv) {
 		stop();
 	}
 
-	nitroFSInit("/_nds/TWiLightMenu/main.srldr");
+	nitroFSInit(argv[0]);
 
 	if (access(settingsinipath, F_OK) != 0 && flashcardFound()) {
 		settingsinipath = "fat:/_nds/TWiLightMenu/settings.ini";		// Fallback to .ini path on flashcard, if not found on SD card, or if SD access is disabled
