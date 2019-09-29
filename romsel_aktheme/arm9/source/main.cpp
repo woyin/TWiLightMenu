@@ -119,7 +119,7 @@ int main(int argc, char **argv)
 	nocashMessage("begin");
 	defaultExceptionHandler();
 	nocashMessage("except init");
-	sys().initFilesystem();
+	sys().initFilesystem(argv[0]);
 	nocashMessage("fs init");
 	sys().initArm7RegStatuses();
 	nocashMessage("arm7 init");

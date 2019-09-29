@@ -22,8 +22,6 @@ package: all
 	@cp "rungame/rungame.nds" "$(PACKAGE)/DSi - CFW users/SDNAND root/title/00030015/534c524e/content/00000000.app"
 
 	@mkdir -p "$(PACKAGE)/_nds/TWiLightMenu"
-	@cp "manual/manual.nds" "$(PACKAGE)/_nds/TWiLightMenu/manual.srldr"
-	@cp "romsel_aktheme/romsel_aktheme.nds" "$(PACKAGE)/_nds/TWiLightMenu/akmenu.srldr"
 	@cp "romsel_dsimenutheme/romsel_dsimenutheme.nds" "$(PACKAGE)/_nds/TWiLightMenu/dsimenu.srldr"
 	@cp "slot1launch/slot1launch.nds" "$(PACKAGE)/_nds/TWiLightMenu/slot1launch.srldr"
 	@cp "title/title.nds" "$(PACKAGE)/_nds/TWiLightMenu/main.srldr"
@@ -80,7 +78,6 @@ clean:
 	@rm -rf "$(PACKAGE)/BOOT_FC.NDS"
 	@rm -rf "$(PACKAGE)/DSi - CFW users/SDNAND root/title/00030015/53524c41/content/00000000.app"
 	@rm -rf "$(PACKAGE)/DSi - CFW users/SDNAND root/title/00030015/534c524e/content/00000000.app"
-	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/akmenu.srldr"
 	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/dsimenu.srldr"
 	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/main.srldr"
 	@rm -rf "$(PACKAGE)/_nds/TWiLightMenu/slot1launch.srldr"

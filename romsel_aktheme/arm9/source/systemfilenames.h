@@ -28,7 +28,7 @@
 #define SFN_SYSTEM_DIR              "/_nds/TWiLightMenu/akmenu/"
 
 
-#define SFN_FALLBACK_UI_DIRECTORY  "nitro:/themes/zelda"
+#define SFN_FALLBACK_UI_DIRECTORY  "nitro:/akmenu/themes/zelda"
 #define SFN_SYSTEM_UI_DIRECTORY    SFN_SYSTEM_DIR"themes/"
 #define SFN_UI_DIRECTORY           sfn().uiDirectory() + 
 
@@ -80,12 +80,12 @@
 
 #define SFN_UI_FONT                 SFN_UI_DIRECTORY"/font.pcf"
 
-#define SFN_LANGUAGE_DIRECTORY      "nitro:/language/"
+#define SFN_LANGUAGE_DIRECTORY      "nitro:/akmenu/language/"
 #define SFN_LANGUAGE_TEXT           SFN_LANGUAGE_DIRECTORY "%s/language.txt"
 
-#define SFN_FONTS_DIRECTORY         "nitro:/fonts/"
+#define SFN_FONTS_DIRECTORY         "nitro:/akmenu/fonts/"
 #define SFN_DEFAULT_FONT            "tahoma.pcf"
-#define SFN_FALLBACK_FONT           "nitro:/fonts/tahoma.pcf"
+#define SFN_FALLBACK_FONT           "nitro:/akmenu/fonts/tahoma.pcf"
 
 
 #define SFN_ICONS_DIRECTORY         SFN_SYSTEM_DIR"icons/"

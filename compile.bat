@@ -32,6 +32,9 @@ cd ..
 cd "romsel_r4theme"
 make
 cd ..
+cd "romsel_aktheme"
+make
+cd ..
 cd "title"
 make
 copy "title.nds" "../7zfile/_nds/TWiLightMenu/main.srldr"

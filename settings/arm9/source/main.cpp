@@ -184,13 +184,13 @@ void loadMainMenu()
 void loadROMselect()
 {
 	vector<char *> argarray;
+	argarray.push_back((char*)runningPath);
 	if (ms().theme == 3)
 	{
-		runNdsFile("/_nds/TWiLightMenu/akmenu.srldr", 0, NULL, true, false, false, true, true);
+		runNdsFile("nitro:/akmenu/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
 	}
 	else if (ms().theme == 2)
 	{
-		argarray.push_back((char*)runningPath);
 		runNdsFile("nitro:/r4menu/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
 	}
 	else
