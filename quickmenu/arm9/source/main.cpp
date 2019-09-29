@@ -896,18 +896,20 @@ void loadGameOnFlashcard (const char* ndsPath, std::string filename, bool usePer
 	stop();
 }
 
-void loadROMselect()
+void loadROMselect(const char* runningPath)
 {
 	if (sdFound()) {
 		chdir("sd:/");
 	}
+	vector<char *> argarray;
 	if (theme == 3)
 	{
 		runNdsFile("/_nds/TWiLightMenu/akmenu.srldr", 0, NULL, true, false, false, true, true);
 	}
 	else if (theme == 2)
 	{
-		runNdsFile("/_nds/TWiLightMenu/r4menu.srldr", 0, NULL, true, false, false, true, true);
+		argarray.push_back((char*)runningPath);
+		runNdsFile("nitro:/r4menu/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
 	}
 	else
 	{
@@ -1418,7 +1420,7 @@ int main(int argc, char **argv) {
 								printGbaBannerText();
 								swiWaitForVBlank();
 							}
-							loadROMselect();
+							loadROMselect(argv[0]);
 						} else if (launchType > 0) {
 							showCursor = false;
 							fadeType = false;	// Fade to white
@@ -1437,7 +1439,7 @@ int main(int argc, char **argv) {
 							if (romFound) {
 								applaunch = true;
 							} else {
-								loadROMselect();
+								loadROMselect(argv[0]);
 							}
 						} else if (launchType == 0 && !flashcardFound() && REG_SCFG_MC != 0x11) {
 							showCursor = false;
@@ -1659,7 +1661,7 @@ int main(int argc, char **argv) {
 						iconYpos[6] -= 6;
 						swiWaitForVBlank();
 					}
-					loadROMselect();
+					loadROMselect(argv[0]);
 				}
 
 				menuButtonPressed = false;

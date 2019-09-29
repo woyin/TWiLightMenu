@@ -28,7 +28,6 @@
 
 ---------------------------------------------------------------------------------*/
 #include <nds.h>
-#include <maxmod7.h>
 
 unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
 
@@ -87,11 +86,8 @@ int main() {
 
 	fifoInit();
 	
-	mmInstall(FIFO_MAXMOD);
-	
 	SetYtrigger(80);
 	
-	installSoundFIFO();
 	installSystemFIFO();
 
 	irqSet(IRQ_VCOUNT, VcountHandler);

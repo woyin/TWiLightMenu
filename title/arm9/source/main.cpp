@@ -176,12 +176,14 @@ void loadROMselect(int number)
 	mmEffectCancelAll();
 	fifoSendValue32(FIFO_USER_01, 0); // Cancel sound fade out
 
+	vector<char *> argarray;
 	switch (number) {
 		case 3:
 			runNdsFile("/_nds/TWiLightMenu/akmenu.srldr", 0, NULL, true, false, false, true, true);
 			break;
 		case 2:
-			runNdsFile("/_nds/TWiLightMenu/r4menu.srldr", 0, NULL, true, false, false, true, true);
+			argarray.push_back((char*)"/_nds/TWiLightMenu/main.srldr");
+			runNdsFile("nitro:/r4menu/exe.srldr", 0, NULL, true, false, false, true, true);
 			break;
 		default:
 			runNdsFile("/_nds/TWiLightMenu/dsimenu.srldr", 0, NULL, true, false, false, true, true);

@@ -21,7 +21,6 @@
 ------------------------------------------------------------------*/
 #include <nds.h>
 #include <nds/arm9/dldi.h>
-#include <maxmod9.h>
 
 #include <stdio.h>
 #include <fat.h>
@@ -56,9 +55,6 @@
 
 #include "cheat.h"
 #include "crc.h"
-
-#include "soundbank.h"
-#include "soundbank_bin.h"
 
 #include "sr_data_srllastran.h"	// For rebooting into the game
 
@@ -960,7 +956,7 @@ int main(int argc, char **argv) {
 	
 	LoadColor();
 
-	nitroFSInit("/_nds/TWiLightMenu/r4menu.srldr");
+	nitroFSInit(argv[0]);
 
 	if (access(settingsinipath, F_OK) != 0 && flashcardFound()) {
 		settingsinipath = "fat:/_nds/TWiLightMenu/settings.ini";		// Fallback to .ini path on flashcard, if not found on SD card, or if SD access is disabled
@@ -1323,7 +1319,9 @@ int main(int argc, char **argv) {
 				if (sdFound()) {
 					chdir("sd:/");
 				}
-				int err = runNdsFile ("/_nds/TWiLightMenu/settings.srldr", 0, NULL, true, false, false, true, true);
+				vector<char *> argarray;
+				argarray.push_back((char*)argv[0]);
+				int err = runNdsFile("nitro:/settings/exe.srldr", argarray.size(), (const char **)&argarray[0], true, false, false, true, true);
 				iprintf ("Start failed. Error %i\n", err);
 			}
 		} else {
