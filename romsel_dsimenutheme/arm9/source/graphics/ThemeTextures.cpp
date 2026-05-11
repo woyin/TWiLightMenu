@@ -1559,7 +1559,7 @@ void loadRotatingCubes() {
 		}
 
 		if (doRead) {
-			// Compatible with RVID v2 & v3
+			// Compatible with RVID v2-v5
 			int rvidVer = 0;
 			fseek(videoFrameFile, 0x4, SEEK_SET);
 			fread((void*)&rvidVer, sizeof(u32), 1, videoFrameFile);
@@ -1574,13 +1574,16 @@ void loadRotatingCubes() {
 			fread((void*)&rocketVideo_fps, sizeof(u8), 1, videoFrameFile);
 			if (rocketVideo_fps >= 0x80) {
 				rocketVideo_fps -= 0x80;
+			} else if (rocketVideo_fps == 0) {
+				rocketVideo_fps = 60;
 			}
 
 			extern u8 rocketVideo_height;
 			// fseek(videoFrameFile, 0xD, SEEK_SET);
 			fread((void*)&rocketVideo_height, sizeof(u8), 1, videoFrameFile);
 
-			if (rvidVer == 3) {
+			const bool latestVer = (rvidVer >= 3 && rvidVer <= 5);
+			if (latestVer) {
 				u8 isDualScreen = 0;
 				fseek(videoFrameFile, 0xF, SEEK_SET);
 				fread((void*)&isDualScreen, sizeof(u8), 1, videoFrameFile);
@@ -1592,12 +1595,12 @@ void loadRotatingCubes() {
 			}
 
 			u8 rvidBmpMode = 1;
-			if (rvidVer == 3) {
+			if (latestVer) {
 				fseek(videoFrameFile, 0x13, SEEK_SET);
 				fread((void*)&rvidBmpMode, sizeof(u8), 1, videoFrameFile);
 			}
 
-			u32 framesSize = (0x200*rocketVideo_height)*(rocketVideo_videoFrames+1);
+			const u32 framesSize = (0x200*rocketVideo_height)*(rocketVideo_videoFrames+1);
 			if (rocketVideo_height > 144 || framesSize > 0x700000) {
 				fclose(videoFrameFile);
 				return;
@@ -1613,7 +1616,7 @@ void loadRotatingCubes() {
 			} */
 
 			u32 framesOffset = 0x200;
-			if (rvidVer == 3) {
+			if (latestVer) {
 				u16* rotatingCubesLocation16 = (u16*)rotatingCubesLocation;
 
 				u16* colors256 = NULL;
